@@ -21,16 +21,22 @@
 
 <body>
 
-  <!-- ============ ECRAN D'ENTRÉE ============
- 1) Photo : medias/portrait.png  → PNG DÉTOURÉ (fond transparent) pour que le nom passe derrière la tête.
- 2) Prénom / Nom : modifiez CONFIG.nom dans le script en bas du fichier. -->
-  <div id="splash" role="dialog" aria-label="Bienvenue chez Aladjé Concept">
-    <div class="nm" aria-hidden="true"><span id="n1"></span><span id="n2"></span></div>
-    <img id="portrait" src="IMAGE/image1.png" alt="Portrait de la responsable d'Aladjé Concept">
-    <div class="sp-bot">
-      <p>Aladjé Concept · Pour votre plus grand bonheur</p><button class="btn alt" id="enter">Entrer sur le
-        site</button>
+  <div id="splash" role="dialog" aria-modal="true" aria-label="Bienvenue chez Aladjé Concept">
+    <div class="welcome-card">
+      <p class="welcome-eyebrow">STANDS GOURMANDS · ABIDJAN</p>
+      <div class="welcome-brand">
+        <span class="welcome-icon">
+          <img src="IMAGE/icoone.jpeg" alt="Icône Aladjé Concept">
+        </span>
+        <p class="welcome-wordmark"><span>ALADJé</span><span>CONCEPT</span></p>
+      </div>
+      <p class="welcome-message">Des instants gourmands pour célébrer vos plus beaux moments.</p>
+      <button class="btn welcome-enter" id="enter" type="button">
+        Découvrir notre univers <span aria-hidden="true">→</span>
+      </button>
+      <p class="welcome-footnote">Anniversaires · Mariages · Événements</p>
     </div>
+    <div class="splash-shutters" aria-hidden="true"><span></span><span></span></div>
   </div>
 
   <nav>
@@ -167,7 +173,6 @@
   <script>
     /* =================== CONFIGURATION : tout ce que vous devez modifier =================== */
     const CONFIG = {
-      nom: ["CAROLE", "KOFFI"],                    // ← Prénom et nom de la dame (écran d'entrée)
       whatsapp: "2250506666881",               // numéro sans + ni espaces
       liens: { fb: "#", ig: "#", tt: "#" }            // ← collez vos liens Facebook / Instagram / TikTok
     };
@@ -199,13 +204,18 @@
     const sel = new Set(), fmt = n => n.toLocaleString("fr-FR") + " FCFA";
     const store = { get() { try { return JSON.parse(localStorage.getItem("aladje") || "{}") } catch (e) { return {} } }, set(v) { try { localStorage.setItem("aladje", JSON.stringify(v)) } catch (e) { } } };
 
-    /* Écran d'entrée */
-    $("#n1").textContent = CONFIG.nom[0]; $("#n2").textContent = CONFIG.nom[1];
-    $("#portrait").onerror = function () { this.style.display = "none" };
-    function closeSplash() { $("#splash").classList.add("out"); setTimeout(() => $("#splash").remove(), 950); try { sessionStorage.setItem("seen", "1") } catch (e) { } }
-    $("#enter").onclick = closeSplash;
-    let seen = false; try { seen = sessionStorage.getItem("seen") } catch (e) { }
-    if (seen) $("#splash").remove(); else setTimeout(() => $("#splash") && closeSplash(), 7000);
+    /* Ouverture de l'accueil par des volets, comme une fenêtre à deux battants. */
+    const splash = $("#splash");
+    document.body.classList.add("welcome-open");
+    $("#enter").focus();
+    $("#enter").onclick = () => {
+      if (splash.classList.contains("opening")) return;
+      splash.classList.add("opening");
+      splash.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("welcome-open");
+      const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1150;
+      window.setTimeout(() => splash.remove(), delay);
+    };
 
     /* Liens */
     $("#waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Bonjour Aladjé Concept, je souhaite des informations pour un événement.");
