@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aladjé Concept — Stands gourmands pour événements à Abidjan</title>
+  <meta name="description"
+    content="Aladjé Concept propose des stands pop-corn, barbe à papa, gaufres, hot-dogs et fontaine à chocolat pour anniversaires, mariages et festivals. Réservez au +225 05 06 66 68 81.">
+  <!-- Favicon : placez votre logo carré dans medias/logo-icone.png -->
+  <link rel="icon" href="IMAGE/image2.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Open+Sans:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Aladjé Concept","telephone":"+2250506666881","description":"Stands gourmands pour événements","areaServed":"Abidjan"}</script>
+</head>
+
+<body>
+
+  <!-- ============ ECRAN D'ENTRÉE ============
+ 1) Photo : medias/portrait.png  → PNG DÉTOURÉ (fond transparent) pour que le nom passe derrière la tête.
+ 2) Prénom / Nom : modifiez CONFIG.nom dans le script en bas du fichier. -->
+  <div id="splash" role="dialog" aria-label="Bienvenue chez Aladjé Concept">
+    <div class="nm" aria-hidden="true"><span id="n1"></span><span id="n2"></span></div>
+    <img id="portrait" src="IMAGE/image1.png" alt="Portrait de la responsable d'Aladjé Concept">
+    <div class="sp-bot">
+      <p>Aladjé Concept · Pour votre plus grand bonheur</p><button class="btn alt" id="enter">Entrer sur le
+        site</button>
+    </div>
+  </div>
+
+  <nav>
+    <span><img src="IMAGE/image2.png" alt="" onerror="this.remove()"><b>Aladjé Concept</b></span>
+    <span><a class="h" href="#galerie">Galerie</a><a class="h" href="#stands">Nos stands</a><a class="h"
+        href="#tarifs">Tarifs</a><a class="h" href="#faq">FAQ</a><a href="#reserver"><b
+          class="nav-reserve">Réserver</b></a></span>
+  </nav>
+
+  <header class="hero" id="accueil">
+    <!-- VIDÉO HERO (5–8 s en boucle) : medias/hero.mp4 — image de secours : medias/hero.jpg -->
+    <video autoplay muted loop playsinline poster="IMAGE/WhatsApp Image 2026-1055.jpeg">
+      <source src="IMAGE/VIDEO 1.mp4" type="video/mp4">
+    </video>
+    <div class="in">
+      <h1>Aladjé Concept — Stands gourmands pour vos événements</h1>
+      <p>Rendez vos événements inoubliables avec nos stands sucrés et salés : pop-corn, barbe à papa, gaufres, hot-dogs
+        et fontaine à chocolat.</p>
+      <a class="btn" href="#reserver">Réserver maintenant</a><a class="btn alt" href="#galerie">Voir la galerie</a>
+    </div>
+  </header>
+
+  <section id="galerie" class="rv">
+    <h2>Galerie</h2>
+    <div class="gal" id="gal"></div>
+  </section>
+
+  <section id="stands" class="rv">
+    <h2>Nos stands</h2>
+    <p class="sub">Anniversaires, mariages, baptêmes, festivals et foires : choisissez vos stands, nous les installons
+      et les servons sur place.</p>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <section id="tarifs" class="rv">
+    <h2>Packages et tarifs</h2>
+    <div class="calc">
+      <div>
+        <p>Nombre d'invités</p>
+        <div class="big" id="gN">80</div>
+        <input type="range" id="gR" min="10" max="500" step="5" value="80" aria-label="Nombre d'invités">
+        <div class="pk" aria-live="polite"><span data-p="Bronze">Bronze</span><span data-p="Argent">Argent</span><span
+            data-p="Or">Or</span></div>
+        <p id="pD"></p>
+      </div>
+      <div>
+        <p>Votre sélection</p>
+        <div class="tot" id="tot" aria-live="polite"></div>
+        <p id="sel" class="selection"></p>
+        <button class="btn" id="applyPk">Appliquer ce package</button>
+        <a class="btn line" href="#reserver">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reserver" class="rv">
+    <form class="fm" id="form" novalidate>
+      <h2>Réservez votre stand</h2>
+      <p>Trois étapes. Votre demande est envoyée directement par WhatsApp.</p>
+      <div class="bar"><i id="pb"></i></div>
+
+      <div class="stp on" data-s="0">
+        <label>Type d'événement<select name="type" required>
+            <option value="">Choisir…</option>
+            <option>Anniversaire</option>
+            <option>Mariage</option>
+            <option>Baptême</option>
+            <option>Festival</option>
+            <option>Foire</option>
+            <option>Autre</option>
+          </select></label>
+        <label>Date<input type="date" name="date" required></label>
+        <label>Lieu<input name="lieu" placeholder="Commune, quartier ou salle" required></label>
+        <label>Nombre d'invités<input type="number" name="invites" min="1" placeholder="Ex. 80" required></label>
+      </div>
+      <div class="stp" data-s="1">
+        <p>Choisissez vos stands :</p>
+        <div class="chk" id="chk"></div>
+        <label>Précisions ou options<textarea name="msg" rows="3"
+            placeholder="Parfums, personnalisation, horaires…"></textarea></label>
+      </div>
+      <div class="stp" data-s="2">
+        <label>Nom complet<input name="nom" autocomplete="name" required></label>
+        <label>Téléphone<input type="tel" name="tel" autocomplete="tel" placeholder="+225 …" required></label>
+        <label>Email (facultatif)<input type="email" name="email" autocomplete="email"></label>
+      </div>
+      <p class="err" id="err" role="alert"></p>
+      <div class="nav2"><button type="button" class="btn alt" id="prev">Retour</button><button type="button" class="btn"
+          id="next">Continuer</button></div>
+    </form>
+  </section>
+
+  <section id="faq" class="rv">
+    <h2>Questions fréquentes</h2>
+    <details>
+      <summary>De quoi avez-vous besoin sur place ?</summary>
+      <p>Un espace à plat et une prise électrique par stand. Précisez-nous le lieu lors de la réservation.</p>
+    </details>
+    <details>
+      <summary>Combien de temps avant l'événement faut-il réserver ?</summary>
+      <p>Plus tôt vous réservez, mieux c'est.</p>
+    </details>
+    <details>
+      <summary>Quand installez-vous les stands ?</summary>
+      <p>Nous arrivons avant le début de l'événement pour tout préparer. </p>
+    </details>
+    <details>
+      <summary>Comment garantissez-vous l'hygiène ?</summary>
+      <p>Nos équipes préparent et servent sur place, avec du matériel propre.</p>
+    </details>
+    <details>
+      <summary>Comment obtenir un devis ?</summary>
+      <p>Remplissez le formulaire de réservation ou appelez le +225 05 06 66 68 81.</p>
+    </details>
+  </section>
+
+  <footer>
+    <div class="ft">
+      <div>
+        <b class="footer-brand">Aladjé Concept</b>
+        <p>Pour votre plus grand bonheur</p>
+        <p>Tél. : <a class="phone-link" href="tel:+2250506666881">+225 05 06 66 68 81</a></p>
+      </div>
+
+    <p class="copy">© Aladjé Concept — KOFFI CAROLE </p>
+  </footer>
+
+  <div id="sticky">
+    <a class="btn line" href="tel:+2250506666881">Appeler</a>
+    <a class="btn wa" id="waBtn" href="https://wa.me/2250506666881" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn" href="#reserver">Réserver</a>
+  </div>
+
+  <script>
+    /* =================== CONFIGURATION : tout ce que vous devez modifier =================== */
+    const CONFIG = {
+      nom: ["CAROLE", "KOFFI"],                    // ← Prénom et nom de la dame (écran d'entrée)
+      whatsapp: "2250506666881",               // numéro sans + ni espaces
+      liens: { fb: "#", ig: "#", tt: "#" }            // ← collez vos liens Facebook / Instagram / TikTok
+    };
+    /* Stands : prix en FCFA (0 = « sur devis »). Images dans le dossier medias/ */
+    const STANDS = [
+      { id: "pop", t: "Pop-corn", d: "Machine professionnelle pour grandes quantités.",  img: "IMAGE/pop corn.jpeg", prix: 0, star: true },
+      { id: "bar", t: "Barbe à papa", d: "Couleurs et parfums au choix.", img: "medias/barbe-a-papa.jpg", prix: 0 },
+      { id: "gau", t: "Gaufres", d: "Préparation sur place, service rapide.", img: "IMAGE/crepe minijpeg.jpeg", prix: 0 },
+      { id: "hot", t: "Hot-dog", d: "Version sucrée ou salée, pour enfants et adultes.",  img: "medias/hot-dog.jpg", prix: 0 },
+      { id: "cho", t: "Fontaine à chocolat", d: "Nappage et fruits à tremper.",  img: "medias/fontaine-chocolat.jpg", prix: 0 }
+    ];
+    /* Packages proposés selon le nombre d'invités (à ajuster) */
+    const PACKS = [
+      { n: "Bronze", max: 50, ids: ["pop", "bar"] },
+      { n: "Argent", max: 150, ids: ["pop", "bar", "gau"] },
+      { n: "Or", max: 9999, ids: ["pop", "bar", "gau", "hot", "cho"] }
+    ];
+    /* Galerie : une entrée par photo (fichier dans IMAGE/, type = filtre) */
+    const GAL = [
+      ["IMAGE/image.jpeg", "Anniversaire"], ["IMAGE/gamain.jpeg", "Anniversaire"],
+      ["IMAGE/WhatsApp Image 2026-10-07 at 54.jpeg", "Mariage"],
+      ["IMAGE/WhatsApp Image 2026-10-07 at 20.18.55.jpeg", "Mariage"],
+      ["IMAGE/WhatsApp Image 2026-10-07 at 20.18.54.jpeg", "Festival"],
+      ["IMAGE/WhatsApp Image 2026-1055.jpeg", "Baptême"]
+    ];
+    /* ======================================================================================== */
+
+    const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+    const sel = new Set(), fmt = n => n.toLocaleString("fr-FR") + " FCFA";
+    const store = { get() { try { return JSON.parse(localStorage.getItem("aladje") || "{}") } catch (e) { return {} } }, set(v) { try { localStorage.setItem("aladje", JSON.stringify(v)) } catch (e) { } } };
+
+    /* Écran d'entrée */
+    $("#n1").textContent = CONFIG.nom[0]; $("#n2").textContent = CONFIG.nom[1];
+    $("#portrait").onerror = function () { this.style.display = "none" };
+    function closeSplash() { $("#splash").classList.add("out"); setTimeout(() => $("#splash").remove(), 950); try { sessionStorage.setItem("seen", "1") } catch (e) { } }
+    $("#enter").onclick = closeSplash;
+    let seen = false; try { seen = sessionStorage.getItem("seen") } catch (e) { }
+    if (seen) $("#splash").remove(); else setTimeout(() => $("#splash") && closeSplash(), 7000);
+
+    /* Liens */
+    $("#waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Bonjour Aladjé Concept, je souhaite des informations pour un événement.");
+
+    /* Cartes + cases du formulaire */
+    $("#cards").innerHTML = STANDS.map(s => `<article class="card"><div class="ph">${s.star ? '<span class="pop">Populaire</span>' : ''}<span aria-hidden="true">${s.i}</span><img src="${s.img}" alt="${s.t} Aladjé Concept en fonctionnement" loading="lazy" onerror="this.remove()"></div><div class="bd"><h3>${s.t}</h3><p>${s.d}</p><span class="pr">${s.prix ? "À partir de " + fmt(s.prix) : "Tarif sur devis"}</span><button class="btn" data-id="${s.id}" aria-pressed="false">Ajouter au devis</button></div></article>`).join("");
+    $("#chk").innerHTML = STANDS.map(s => `<label><input type="checkbox" value="${s.id}">${s.t}</label>`).join("");
+
+    function sync() {
+      $$("#cards .btn").forEach(b => { const on = sel.has(b.dataset.id); b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); b.textContent = on ? "Ajouté au devis" : "Ajouter au devis" });
+      $$("#chk input").forEach(c => c.checked = sel.has(c.value));
+      const list = STANDS.filter(s => sel.has(s.id)), sum = list.reduce((a, s) => a + s.prix, 0);
+      $("#sel").textContent = list.length ? list.map(s => s.t).join(", ") : "Aucun stand sélectionné pour le moment.";
+      $("#tot").textContent = !list.length ? "" : (sum ? "Estimation : " + fmt(sum) : "Tarif sur devis");
+      store.set({ ...store.get(), sel: [...sel] });
+    }
+    $("#cards").onclick = e => { const b = e.target.closest("button"); if (!b) return; sel.has(b.dataset.id) ? sel.delete(b.dataset.id) : sel.add(b.dataset.id); sync() };
+    $("#chk").onchange = e => { e.target.checked ? sel.add(e.target.value) : sel.delete(e.target.value); sync() };
+
+    /* Calculateur */
+    function pack() {
+      const n = +$("#gR").value, p = PACKS.find(p => n <= p.max);
+      $("#gN").textContent = n;
+      $$(".pk span").forEach(x => x.classList.toggle("on", x.dataset.p === p.n));
+      $("#pD").textContent = "Package " + p.n + " : " + p.ids.map(i => STANDS.find(s => s.id === i).t).join(", ") + ".";
+      return p;
+    }
+    $("#gR").oninput = pack;
+    $("#applyPk").onclick = () => { pack().ids.forEach(i => sel.add(i)); sync() };
+
+    /* Diaporama de la galerie */
+    $("#gal").innerHTML = GAL.map(g => `<figure><img src="${g[0]}" alt="Photo de la galerie Aladjé Concept" onerror="this.remove()"></figure>`).join("");
+    let galleryIndex = 0;
+    function renderGallery() {
+      const photos = $$("#gal figure");
+      if (!photos.length) return;
+      galleryIndex %= photos.length;
+      photos.forEach((photo, index) => {
+        const isActive = index === galleryIndex;
+        photo.classList.toggle("is-active", isActive);
+        photo.setAttribute("aria-hidden", String(!isActive));
+      });
+    }
+    renderGallery();
+    setInterval(() => {
+      const count = $$("#gal figure").length;
+      if (count > 1) {
+        galleryIndex = (galleryIndex + 1) % count;
+        renderGallery();
+      }
+    }, 3000);
+
+    /* Formulaire multi-étapes */
+    let step = 0;
+    const steps = $$(".stp"), form = $("#form");
+    function show() { steps.forEach((s, i) => s.classList.toggle("on", i === step)); $("#pb").style.width = (step + 1) / steps.length * 100 + "%"; $("#prev").style.visibility = step ? "visible" : "hidden"; $("#next").textContent = step === steps.length - 1 ? "Envoyer sur WhatsApp" : "Continuer"; $("#err").textContent = "" }
+    function valid() {
+      let ok = true;
+      $$(".stp.on [required]").forEach(f => { const bad = !f.value.trim(); f.classList.toggle("bad", bad); if (bad) ok = false });
+      if (step === 1 && !sel.size) { $("#err").textContent = "Choisissez au moins un stand."; return false }
+      if (!ok) $("#err").textContent = "Complétez les champs indiqués.";
+      return ok;
+    }
+    $("#prev").onclick = () => { step--; show() };
+    $("#next").onclick = () => {
+      if (!valid()) return;
+      if (step < steps.length - 1) { step++; show(); return }
+      const d = Object.fromEntries(new FormData(form)), st = STANDS.filter(s => sel.has(s.id)).map(s => s.t).join(", ");
+      const m = `Demande de réservation Aladjé Concept\nÉvénement : ${d.type}\nDate : ${d.date}\nLieu : ${d.lieu}\nInvités : ${d.invites}\nStands : ${st}\nPrécisions : ${d.msg || "-"}\nNom : ${d.nom}\nTéléphone : ${d.tel}\nEmail : ${d.email || "-"}`;
+      window.open("https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(m), "_blank");
+      $("#err").textContent = "Demande prête : confirmez l'envoi dans WhatsApp.";
+    };
+    /* Sauvegarde locale pour reprendre la demande */
+    form.addEventListener("input", () => { const d = Object.fromEntries(new FormData(form)); store.set({ ...store.get(), f: d }) });
+    const saved = store.get();
+    if (saved.f) Object.entries(saved.f).forEach(([k, v]) => { const f = form.elements[k]; if (f && f.type !== "checkbox") f.value = v });
+    (saved.sel || []).forEach(i => sel.add(i));
+    sync(); pack(); show();
+
+    /* Apparition des sections */
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target) } }), { threshold: .1 });
+    $$(".rv").forEach(el => io.observe(el));
+  </script>
+</body>
+
+</html>
