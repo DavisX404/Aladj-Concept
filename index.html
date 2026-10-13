@@ -21,22 +21,16 @@
 
 <body>
 
-  <div id="splash" role="dialog" aria-modal="true" aria-label="Bienvenue chez Aladjé Concept">
-    <div class="welcome-card">
-      <p class="welcome-eyebrow">STANDS GOURMANDS · ABIDJAN</p>
-      <div class="welcome-brand">
-        <span class="welcome-icon">
-          <img src="IMAGE/icoone.jpeg" alt="Icône Aladjé Concept">
-        </span>
-        <p class="welcome-wordmark"><span>ALADJé</span><span>CONCEPT</span></p>
-      </div>
-      <p class="welcome-message">Des instants gourmands pour célébrer vos plus beaux moments.</p>
-      <button class="btn welcome-enter" id="enter" type="button">
-        Découvrir notre univers <span aria-hidden="true">→</span>
-      </button>
-      <p class="welcome-footnote">Anniversaires · Mariages · Événements</p>
+  <!-- ============ ECRAN D'ENTRÉE ============
+ 1) Photo : medias/portrait.png  → PNG DÉTOURÉ (fond transparent) pour que le nom passe derrière la tête.
+ 2) Prénom / Nom : modifiez CONFIG.nom dans le script en bas du fichier. -->
+  <div id="splash" role="dialog" aria-label="Bienvenue chez Aladjé Concept">
+    <div class="nm" aria-hidden="true"><span id="n1"></span><span id="n2"></span></div>
+    <img id="portrait" src="IMAGE/image1.png" alt="Portrait de la responsable d'Aladjé Concept">
+    <div class="sp-bot">
+      <p>Aladjé Concept · Pour votre plus grand bonheur</p><button class="btn alt" id="enter">Entrer sur le
+        site</button>
     </div>
-    <div class="splash-shutters" aria-hidden="true"><span></span><span></span></div>
   </div>
 
   <nav>
@@ -133,19 +127,21 @@
     <h2>Questions fréquentes</h2>
     <details>
       <summary>De quoi avez-vous besoin sur place ?</summary>
-      <p>Un espace à plat et une prise électrique par stand. Précisez-nous le lieu lors de la réservation.</p>
+      <p>Un espace à plat et une prise électrique par stand. Précisez-nous le lieu lors de la réservation. [À compléter
+        : surface exacte et puissance requises.]</p>
     </details>
     <details>
       <summary>Combien de temps avant l'événement faut-il réserver ?</summary>
-      <p>Plus tôt vous réservez, mieux c'est.</p>
+      <p>Plus tôt vous réservez, mieux c'est. [À compléter : délai minimum et éventuelle remise.]</p>
     </details>
     <details>
       <summary>Quand installez-vous les stands ?</summary>
-      <p>Nous arrivons avant le début de l'événement pour tout préparer. </p>
+      <p>Nous arrivons avant le début de l'événement pour tout préparer. [À compléter : durée d'installation.]</p>
     </details>
     <details>
       <summary>Comment garantissez-vous l'hygiène ?</summary>
-      <p>Nos équipes préparent et servent sur place, avec du matériel propre.</p>
+      <p>Nos équipes préparent et servent sur place, avec du matériel propre. [À compléter : tenue, gants, normes
+        appliquées.]</p>
     </details>
     <details>
       <summary>Comment obtenir un devis ?</summary>
@@ -173,6 +169,7 @@
   <script>
     /* =================== CONFIGURATION : tout ce que vous devez modifier =================== */
     const CONFIG = {
+      nom: ["CAROLE", "KOFFI"],                    // ← Prénom et nom de la dame (écran d'entrée)
       whatsapp: "2250506666881",               // numéro sans + ni espaces
       liens: { fb: "#", ig: "#", tt: "#" }            // ← collez vos liens Facebook / Instagram / TikTok
     };
@@ -190,32 +187,19 @@
       { n: "Argent", max: 150, ids: ["pop", "bar", "gau"] },
       { n: "Or", max: 9999, ids: ["pop", "bar", "gau", "hot", "cho"] }
     ];
-    /* Galerie : une entrée par photo (fichier dans IMAGE/, type = filtre) */
-    const GAL = [
-      ["IMAGE/image.jpeg", "Anniversaire"], ["IMAGE/gamain.jpeg", "Anniversaire"],
-      ["IMAGE/WhatsApp Image 2026-10-07 at 54.jpeg", "Mariage"],
-      ["IMAGE/WhatsApp Image 2026-10-07 at 20.18.55.jpeg", "Mariage"],
-      ["IMAGE/WhatsApp Image 2026-10-07 at 20.18.54.jpeg", "Festival"],
-      ["IMAGE/WhatsApp Image 2026-1055.jpeg", "Baptême"]
-    ];
     /* ======================================================================================== */
 
     const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
     const sel = new Set(), fmt = n => n.toLocaleString("fr-FR") + " FCFA";
     const store = { get() { try { return JSON.parse(localStorage.getItem("aladje") || "{}") } catch (e) { return {} } }, set(v) { try { localStorage.setItem("aladje", JSON.stringify(v)) } catch (e) { } } };
 
-    /* Ouverture de l'accueil par des volets, comme une fenêtre à deux battants. */
-    const splash = $("#splash");
-    document.body.classList.add("welcome-open");
-    $("#enter").focus();
-    $("#enter").onclick = () => {
-      if (splash.classList.contains("opening")) return;
-      splash.classList.add("opening");
-      splash.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("welcome-open");
-      const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1150;
-      window.setTimeout(() => splash.remove(), delay);
-    };
+    /* Écran d'entrée */
+    $("#n1").textContent = CONFIG.nom[0]; $("#n2").textContent = CONFIG.nom[1];
+    $("#portrait").onerror = function () { this.style.display = "none" };
+    function closeSplash() { $("#splash").classList.add("out"); setTimeout(() => $("#splash").remove(), 950); try { sessionStorage.setItem("seen", "1") } catch (e) { } }
+    $("#enter").onclick = closeSplash;
+    let seen = false; try { seen = sessionStorage.getItem("seen") } catch (e) { }
+    if (seen) $("#splash").remove(); else setTimeout(() => $("#splash") && closeSplash(), 7000);
 
     /* Liens */
     $("#waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Bonjour Aladjé Concept, je souhaite des informations pour un événement.");
@@ -246,27 +230,108 @@
     $("#gR").oninput = pack;
     $("#applyPk").onclick = () => { pack().ids.forEach(i => sel.add(i)); sync() };
 
-    /* Diaporama de la galerie */
-    $("#gal").innerHTML = GAL.map(g => `<figure><img src="${g[0]}" alt="Photo de la galerie Aladjé Concept" onerror="this.remove()"></figure>`).join("");
-    let galleryIndex = 0;
-    function renderGallery() {
-      const photos = $$("#gal figure");
-      if (!photos.length) return;
-      galleryIndex %= photos.length;
-      photos.forEach((photo, index) => {
-        const isActive = index === galleryIndex;
-        photo.classList.toggle("is-active", isActive);
-        photo.setAttribute("aria-hidden", String(!isActive));
-      });
+    /* Diaporama alimenté automatiquement par galerie.php */
+    const gallery = $("#gal");
+    let galleryIndex = 0, activeGalleryVideo = null;
+    function showGalleryMessage(message) {
+      if (activeGalleryVideo) activeGalleryVideo.pause();
+      activeGalleryVideo = null;
+      gallery.replaceChildren(document.createTextNode(message));
+      gallery.classList.add("is-empty");
     }
-    renderGallery();
-    setInterval(() => {
-      const count = $$("#gal figure").length;
-      if (count > 1) {
-        galleryIndex = (galleryIndex + 1) % count;
-        renderGallery();
+    function removeInvalidGalleryItem(figure, src) {
+      console.warn("Média de galerie inaccessible :", src);
+      const index = [...gallery.querySelectorAll("figure")].indexOf(figure);
+      if (figure.contains(activeGalleryVideo)) {
+        activeGalleryVideo.pause();
+        activeGalleryVideo = null;
       }
-    }, 3000);
+      if (index !== -1 && index < galleryIndex) galleryIndex--;
+      figure.remove();
+      renderGallery();
+    }
+    function renderGallery() {
+      const slides = [...gallery.querySelectorAll("figure")];
+      if (!slides.length) {
+        showGalleryMessage("Aucun média disponible pour le moment.");
+        return;
+      }
+      gallery.classList.remove("is-empty");
+      galleryIndex %= slides.length;
+      const activeSlide = slides[galleryIndex];
+      slides.forEach((slide, index) => {
+        const isActive = index === galleryIndex;
+        slide.classList.toggle("is-active", isActive);
+        slide.setAttribute("aria-hidden", String(!isActive));
+      });
+
+      const activeVideo = activeSlide.querySelector("video");
+      if (activeGalleryVideo && activeGalleryVideo !== activeVideo) activeGalleryVideo.pause();
+      if (activeVideo && activeGalleryVideo !== activeVideo) {
+        activeVideo.currentTime = 0;
+        const playback = activeVideo.play();
+        if (playback) playback.catch(error => console.warn("Lecture vidéo de galerie impossible :", error));
+      }
+      activeGalleryVideo = activeVideo;
+    }
+
+    async function loadGallery() {
+      try {
+        const response = await fetch("galerie.php", { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error("Réponse HTTP " + response.status);
+        const media = await response.json();
+        if (!Array.isArray(media)) throw new Error("La réponse de la galerie est invalide.");
+
+        const galleryItems = media.filter(item =>
+          item &&
+          (item.type === "image" || item.type === "video") &&
+          typeof item.src === "string" &&
+          item.src.startsWith("IMAGE/galerie/")
+        );
+        if (!galleryItems.length) {
+          showGalleryMessage("Aucun média disponible pour le moment.");
+          return;
+        }
+
+        gallery.classList.remove("is-empty");
+        gallery.replaceChildren();
+        galleryItems.forEach(item => {
+          const figure = document.createElement("figure");
+          let mediaElement;
+          if (item.type === "image") {
+            mediaElement = document.createElement("img");
+            mediaElement.alt = "Photo de la galerie Aladjé Concept";
+          } else {
+            mediaElement = document.createElement("video");
+            mediaElement.muted = true;
+            mediaElement.loop = true;
+            mediaElement.playsInline = true;
+            mediaElement.preload = "metadata";
+            const source = document.createElement("source");
+            source.src = item.src;
+            source.type = item.mime;
+            mediaElement.append(source);
+          }
+          mediaElement.addEventListener("error", () => removeInvalidGalleryItem(figure, item.src), { once: true });
+          if (item.type === "image") mediaElement.src = item.src;
+          figure.append(mediaElement);
+          gallery.append(figure);
+        });
+
+        renderGallery();
+        window.setInterval(() => {
+          const count = gallery.querySelectorAll("figure").length;
+          if (count > 1) {
+            galleryIndex = (galleryIndex + 1) % count;
+            renderGallery();
+          }
+        }, 3000);
+      } catch (error) {
+        console.error("Impossible de charger la galerie :", error);
+        showGalleryMessage("La galerie est indisponible pour le moment.");
+      }
+    }
+    loadGallery();
 
     /* Formulaire multi-étapes */
     let step = 0;
